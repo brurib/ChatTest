@@ -1,0 +1,140 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://color_material.res" type="CanvasItemMaterial" id=1]
+[ext_resource path="res://ChatWindow.gd" type="Script" id=2]
+[ext_resource path="res://color_shader.shd" type="Shader" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+shader/shader = ExtResource( 3 )
+shader/shading_mode = 0
+shader_param/col = Color( 0, 0, 0, 0.355176 )
+
+[node name="main" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+transform/pos = Vector2( 508.92, 296.099 )
+anchor_mode = 1
+rotating = false
+current = false
+zoom = Vector2( 1, 1 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="ChatWindow" type="PanelContainer" parent="CanvasLayer"]
+
+visibility/self_opacity = 0.89
+material/material = ExtResource( 1 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 39.0
+margin/top = 368.0
+margin/right = 389.0
+margin/bottom = 568.0
+script/script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ChatWindow"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 343.0
+margin/bottom = 193.0
+custom_constants/separation = 7
+alignment = 1
+
+[node name="ChatTitle" type="Label" parent="CanvasLayer/ChatWindow/VBoxContainer"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 336.0
+margin/bottom = 14.0
+text = "Chat1"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="ChatContainer" type="PanelContainer" parent="CanvasLayer/ChatWindow/VBoxContainer"]
+
+editor/display_folded = true
+material/material = SubResource( 1 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 21.0
+margin/right = 336.0
+margin/bottom = 155.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ChatWindow/VBoxContainer/ChatContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 329.0
+margin/bottom = 127.0
+scroll/horizontal = false
+scroll/vertical = true
+
+[node name="ChatList" type="VBoxContainer" parent="CanvasLayer/ChatWindow/VBoxContainer/ChatContainer/ScrollContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 192.0
+custom_constants/separation = 16
+alignment = 2
+
+[node name="ChatInput" type="LineEdit" parent="CanvasLayer/ChatWindow/VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 162.0
+margin/right = 336.0
+margin/bottom = 186.0
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[connection signal="text_entered" from="CanvasLayer/ChatWindow/VBoxContainer/ChatInput" to="CanvasLayer/ChatWindow" method="_on_ChatInput_text_entered"]
+
+
