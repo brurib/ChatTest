@@ -5,17 +5,16 @@ onready var _chat_list = get_node("VBoxContainer/ChatContainer/ScrollContainer/C
 onready var _chat_input = get_node("VBoxContainer/ChatInput")
 
 func _ready():
-	set_process_input(true)
 	_scroll_bottom()
 	#Link window resize method listener 
-	get_node("/root").connect("size_changed",self,"resize")
+	get_node("/root").connect("size_changed",self,"relocate")
 	
 var _drag_starting_point
 
 #Window resize callback
-func resize():
+func relocate():
 	var pos = get_pos()
-	_safe_set_pos(pos)
+	_safe_set_pos(pos, get_size(), Rect2(Vector2(0,0), OS.get_window_size()))
 
 
 func _input_event(event):
@@ -32,7 +31,7 @@ func _input_event(event):
 			var final_pos = Vector2(0,0)
 			final_pos.x = event.global_x - _drag_starting_point.x
 			final_pos.y = event.global_y - _drag_starting_point.y
-			_safe_set_pos(final_pos)
+			_safe_set_pos(final_pos, get_size(), Rect2(Vector2(0,0), OS.get_window_size()))
 			
 
 #Adds a message to the chat
@@ -54,19 +53,20 @@ func _on_ChatInput_text_entered( text ):
 	add_message(0, text)
 	
 #Perform a check on the final position: if the chat is outside the window will be moved inside.
-func _safe_set_pos(pos):
-	if pos.x > 0:
-		if pos.x + get_size().x < OS.get_window_size().width:
+func _safe_set_pos(pos, size, limit):
+	if pos.x > limit.pos.x:
+		if pos.x + size.x < limit.size.width:
 			pass
 		else :
-			pos.x = OS.get_window_size().width - get_size().x
+			pos.x = limit.size.width - size.x
 	else :
-		pos = Vector2(0, pos.y)
-	if pos.y > 0:
-		if pos.y + get_size().y < OS.get_window_size().height:
+		pos = Vector2(limit.pos.x, pos.y)
+	if pos.y > limit.pos.y:
+		if pos.y + size.y < limit.size.height:
 			pass
 		else :
-			pos.y = OS.get_window_size().height - get_size().y
+			pos.y = limit.size.height - size.y
 	else :
-		pos = Vector2(pos.x, 0)
+		pos = Vector2(pos.x, limit.pos.y)
 	set_pos(pos)
+
