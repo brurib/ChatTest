@@ -103,7 +103,7 @@ margin/left = 7.0
 margin/top = 7.0
 margin/right = 329.0
 margin/bottom = 127.0
-scroll/horizontal = false
+scroll/horizontal = true
 scroll/vertical = true
 
 [node name="ChatList" type="VBoxContainer" parent="CanvasLayer/ChatWindow/VBoxContainer/ChatContainer/ScrollContainer"]

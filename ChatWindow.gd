@@ -10,21 +10,26 @@ func _ready():
 	get_node("/root").connect("size_changed",self,"relocate")
 	
 var _drag_starting_point
-
+var _resize_starting_point
 #Window resize callback
 func relocate():
 	var pos = get_pos()
+	_safe_set_size(get_size(), get_pos(), Rect2(Vector2(0,0), OS.get_window_size()))
 	_safe_set_pos(pos, get_size(), Rect2(Vector2(0,0), OS.get_window_size()))
-
+	
 
 func _input_event(event):
 	if event.type == InputEvent.MOUSE_BUTTON:
 		if Input.is_action_pressed("ui_cursor_selection"):
 			#Start drag
-			_drag_starting_point = event.pos
+			if event.pos.x > get_size().width - 10 and event.pos.x < get_size().width:
+				_resize_starting_point = event.pos
+			else:
+				_drag_starting_point = event.pos
 		else :
 			#End drag
 			_drag_starting_point = null
+			_resize_starting_point = null
 	if event.type == InputEvent.MOUSE_MOTION:
 		if _drag_starting_point != null :
 			#Drag
@@ -32,6 +37,8 @@ func _input_event(event):
 			final_pos.x = event.global_x - _drag_starting_point.x
 			final_pos.y = event.global_y - _drag_starting_point.y
 			_safe_set_pos(final_pos, get_size(), Rect2(Vector2(0,0), OS.get_window_size()))
+		elif _resize_starting_point != null:
+			_safe_set_size(event.pos, get_pos(), Rect2(Vector2(0,0), OS.get_window_size()))
 			
 
 #Adds a message to the chat
@@ -70,3 +77,19 @@ func _safe_set_pos(pos, size, limit):
 		pos = Vector2(pos.x, limit.pos.y)
 	set_pos(pos)
 
+func _safe_set_size(pos, size, limit):
+	if pos.x > limit.pos.x:
+		if pos.x + size.x < limit.size.width:
+			pass
+		else :
+			pos.x = limit.size.width - size.x
+	else :
+		pos = Vector2(limit.pos.x, pos.y)
+	if pos.y > limit.pos.y:
+		if pos.y + size.y < limit.size.height:
+			pass
+		else :
+			pos.y = limit.size.height - size.y
+	else :
+		pos = Vector2(pos.x, limit.pos.y)
+	set_size(pos)
