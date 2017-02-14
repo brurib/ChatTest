@@ -1,0 +1,114 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://color_material.res" type="CanvasItemMaterial" id=1]
+[ext_resource path="res://ChatWindow.gd" type="Script" id=2]
+[ext_resource path="res://color_shader.shd" type="Shader" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+shader/shader = ExtResource( 3 )
+shader/shading_mode = 0
+shader_param/col = Color( 0, 0, 0, 0.355176 )
+
+[node name="ChatWindow" type="PanelContainer"]
+
+visibility/self_opacity = 0.89
+material/material = ExtResource( 1 )
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 24.0
+margin/right = 0.0
+margin/bottom = 3.0
+script/script = ExtResource( 2 )
+dismissable = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 1016.0
+margin/bottom = 566.0
+custom_constants/separation = 7
+alignment = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1009.0
+margin/bottom = 20.0
+alignment = 2
+
+[node name="Close" type="Button" parent="VBoxContainer/HBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 0
+size_flags/vertical = 2
+margin/left = 962.0
+margin/top = 0.0
+margin/right = 1009.0
+margin/bottom = 20.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Close"
+flat = false
+
+[node name="ChatContainer" type="PanelContainer" parent="VBoxContainer"]
+
+material/material = SubResource( 1 )
+focus/ignore_mouse = true
+focus/stop_mouse = false
+size_flags/horizontal = 2
+size_flags/vertical = 3
+margin/left = 0.0
+margin/top = 27.0
+margin/right = 1009.0
+margin/bottom = 528.0
+
+[node name="Label" type="RichTextLabel" parent="VBoxContainer/ChatContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 7.0
+margin/top = 7.0
+margin/right = 1002.0
+margin/bottom = 494.0
+bbcode/enabled = true
+bbcode/bbcode = ""
+visible_characters = -1
+
+[node name="ChatInput" type="LineEdit" parent="VBoxContainer"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 3
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 535.0
+margin/right = 1009.0
+margin/bottom = 559.0
+placeholder/alpha = 0.6
+focus_mode = 2
+caret/caret_blink = false
+caret/caret_blink_speed = 0.65
+
+[connection signal="text_entered" from="VBoxContainer/ChatInput" to="." method="_on_ChatInput_text_entered"]
+
+
